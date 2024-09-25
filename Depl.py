@@ -4,6 +4,7 @@ import requests
 import pickle
 import zipfile
 import os
+import io
 st.markdown(
     """
     <style>
@@ -24,19 +25,17 @@ st.markdown(
 )
 
 # Path to the zip file
-zip_path = r'C:\Users\abhis\OneDrive\Documents\Twitter_cast\Tweets.zip'
+zip_path = r'https://github.com/ABHISHEK64/twitter_check_1/raw/refs/heads/main/Tweets.zip'
 
-# Folder where you want to extract the files
-extract_folder = r'C:\Users\abhis\OneDrive\Documents\Twitter_cast\extracted'
-
-# Extract the zip file
-with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-    zip_ref.extractall(extract_folder)
-
-# Path to the extracted .pkl file
-pkl_file = os.path.join(extract_folder, 'Tweets.pkl')
-st.title('Tweeter Checking System')
-Twitter_list=pickle.load(open(pkl_file,'rb'))
+response = requests.get(zip_path)
+if response.status_code == 200:
+    # Open the ZIP file from the downloaded content in memory
+    with zipfile.ZipFile(io.BytesIO(response.content)) as zip_ref:
+        # Extract the Tweets.pkl file in memory
+        with zip_ref.open('Tweets.pkl') as pkl_file:
+            Twitter_list = pickle.load(pkl_file)
+else:
+    st.error("Failed to download the ZIP file from GitHub.")
 search_term=st.text_input("Enter search term:")
 if search_term:
     # Filter the DataFrame for the search term in the 'text' column
