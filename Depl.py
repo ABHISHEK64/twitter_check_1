@@ -36,6 +36,7 @@ if response.status_code == 200:
             Twitter_list = pickle.load(pkl_file)
 else:
     st.error("Failed to download the ZIP file from GitHub.")
+st.title('Tweets check system')    
 search_term=st.text_input("Enter search term:")
 if search_term:
     # Filter the DataFrame for the search term in the 'text' column
