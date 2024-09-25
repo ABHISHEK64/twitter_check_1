@@ -14,10 +14,10 @@ st.markdown(
         color:white;
     }
     h1{
-    color:blue;
+    color:white;
     }
     p{
-    color:blue
+    color:white
     }
     </style>
     """,
